@@ -141,11 +141,19 @@ class PlayList {
     
     
     
-    /** Adds all the tracks in the other list to the end of this list. 
+  /** Adds all the tracks in the other list to the end of this list. 
+     *  If the total size of both lists is too large, does nothing. */
+    //// An elegant and terribly inefficient implementation.
+     /** Adds all the tracks in the other list to the end of this list. 
      *  If the total size of both lists is too large, does nothing. */
     //// An elegant and terribly inefficient implementation.
      public void add(PlayList other) {
-        //// replace this comment with your code
+        if(size + other.getSize() < 9){
+            for(int i = 0; i < other.getSize(); i ++){
+            tracks[size] = other.getTrack(i);
+            size ++;
+            }
+        }
     }
 
     /** Returns the index in this list of the track that has the shortest duration,
@@ -154,11 +162,20 @@ class PlayList {
      *  minimum value (5) when starting the search from index 2.  
      *  If start is negative or greater than size - 1, returns -1.
      */
-    private int minIndex(int start) {
-        //// replace the following statement with your code
-        return 0;
+   private int minIndex(int start) {
+        if(start >= 0 && start < size){
+            int min = tracks[0].getDuration();
+            int index = 0;
+            for(int i = 1; i < size; i ++){
+              if(tracks[i].getDuration() < min && tracks[i].getDuration() >= start){
+                min = tracks[i].getDuration();
+                index = i;
+              }
+            }
+            return index;
+        }
+        return -1;
     }
-
     /** Returns the title of the shortest track in this list. 
      *  If the list is empty, returns null. */
     public String titleOfShortestTrack() {
@@ -170,8 +187,16 @@ class PlayList {
      *  rather than returning a new, sorted playlist, the method sorts
      *  the list on which it was called (this list). */
     public void sortedInPlace() {
-        // Uses the selection sort algorithm,  
-        // calling the minIndex method in each iteration.
-        //// replace this statement with your code
+            int minIndex = 0;
+       for(int i = 0; i < size; i ++){
+        minIndex = i;
+        for(int j = i + 1; j < size; j ++){
+            if(tracks[j].getDuration() < tracks[minIndex].getDuration()){
+                Track temp = tracks[j];
+                tracks[j] = tracks[i];
+                tracks[i] = temp;
+            }
+        }
+       }
     }
-}
+    }
